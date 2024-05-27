@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AV_Mask_Arms
+  m_Mask: 00000000000000000000000000000000000000000100000001000000010000000100000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature.001
+    m_Weight: 0
+  - m_Path: Armature.001/Base
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Body
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Body/Head
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Body/Shoulder_left
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_left/ArmLeft1
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_left/ArmLeft1/ArmLeft2
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_left/ArmLeft1/ArmLeft2/ArmLeft3
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_right
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_right/ArmRight1
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_right/ArmRight1/ArmRight2
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Body/Shoulder_right/ArmRight1/ArmRight2/ArmRight3
+    m_Weight: 1
+  - m_Path: Armature.001/Base/Hip_left
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Hip_left/Leg_left
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Hip_left/Leg_left/Foot_left
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Hip_right
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Hip_right/Leg_right
+    m_Weight: 0
+  - m_Path: Armature.001/Base/Hip_right/Leg_right/Foot_right
+    m_Weight: 0
+  - m_Path: "rigbrasdetach\xE9s"
+    m_Weight: 0
