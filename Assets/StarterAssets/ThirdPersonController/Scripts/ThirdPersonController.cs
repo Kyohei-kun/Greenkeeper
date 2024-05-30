@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -12,8 +13,9 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
     [RequireComponent(typeof(PlayerInput))]
 #endif
-    public class ThirdPersonController : MonoBehaviour
+    public class ThirdPersonController : NetworkBehaviour
     {
+        #region Variables
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -124,19 +126,16 @@ namespace StarterAssets
 #endif
             }
         }
-
-
-        private void Awake()
+        #endregion
+        private void Start()
         {
+            if (!IsOwner) return;
             // get a reference to our main camera
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
-        }
 
-        private void Start()
-        {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
             _hasAnimator = TryGetComponent(out _animator);
@@ -157,6 +156,7 @@ namespace StarterAssets
 
         private void Update()
         {
+            if (!IsOwner) return;
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();
@@ -166,6 +166,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
+            if (!IsOwner) return;
             CameraRotation();
         }
 
@@ -271,7 +272,6 @@ namespace StarterAssets
 
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
