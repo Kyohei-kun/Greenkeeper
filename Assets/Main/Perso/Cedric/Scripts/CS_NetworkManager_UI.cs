@@ -7,24 +7,34 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CS_NetworkManager_UI : MonoBehaviour
+public class CS_NetworkManager_UI : NetworkBehaviour
 {
     [SerializeField] private Button host_Btn;
     [SerializeField] private Button join_Btn;
-    [SerializeField] private TextMeshProUGUI statut_Text;
+    [SerializeField] private Button start_Btn;
     [SerializeField] private TMP_InputField inputField_IP;
     [SerializeField] private GameObject panel;
 
-    private void Awake()
+    private void Start()
     {
-        host_Btn.onClick.AddListener(() => { NetworkManager.Singleton.StartHost(); statut_Text.text = "Role: Client/Server"; statut_Text.color = new Color(1, 0.5f, 0); });
-        join_Btn.onClick.AddListener(() => 
+        start_Btn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = CleanSpaceString(inputField_IP.text);  
-            NetworkManager.Singleton.StartClient(); statut_Text.text = "Role: Client";   
-            statut_Text.color = Color.cyan; 
+            if (IsHost)
+                NetworkManager.Singleton.SceneManager.LoadScene("Cedric_Main", LoadSceneMode.Single);
+        });
+        host_Btn.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.StartHost();
+
+        });
+        join_Btn.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = CleanSpaceString(inputField_IP.text);
+            NetworkManager.Singleton.StartClient();
         });
 
         NetworkManager.Singleton.OnClientStarted += Singleton_OnClientStarted;
@@ -40,8 +50,14 @@ public class CS_NetworkManager_UI : MonoBehaviour
     {
         panel.SetActive(false);
     }
+
     private string CleanSpaceString(string ip)
     {
         return ip.Replace(" ", string.Empty);
+    }
+
+    private void Update()
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 }

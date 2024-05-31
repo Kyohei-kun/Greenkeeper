@@ -20,6 +20,7 @@ public class CS_Net_Init_Player : NetworkBehaviour
             playerInput.enabled = true;
             thirdPersonController.enabled = true;
             characterController.enabled = true;
+            GetComponent<CS_Shoot>().enabled = true;
         }
         else
         {

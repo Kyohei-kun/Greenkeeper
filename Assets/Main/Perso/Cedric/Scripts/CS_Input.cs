@@ -8,11 +8,6 @@ public class CS_Input : NetworkBehaviour
 {
     private Vector2 dir;
 
-    public override void OnNetworkSpawn()
-    {
-
-    }
-
     private void Update()
     {
         Vector3 moveDir = Vector3.zero;
