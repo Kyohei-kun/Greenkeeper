@@ -1245,7 +1245,7 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 1
   CinemachineCameraTarget: {fileID: 8232187133064487311}
   TopClamp: 70
   BottomClamp: -30
@@ -1347,6 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83faf63976640c4b8d4ec5e00eb2762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offline: 0
   playerInput: {fileID: 5296681324589723025}
   virtualCamera: {fileID: 8232187133064487311}
   thirdPersonController: {fileID: 7040373946682534808}

@@ -16,6 +16,8 @@ namespace StarterAssets
     public class ThirdPersonController : NetworkBehaviour
     {
         #region Variables
+        private bool offline = false;
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -126,10 +128,13 @@ namespace StarterAssets
 #endif
             }
         }
+
+        public bool Offline { get => offline; set => offline = value; }
         #endregion
+
         private void Start()
         {
-            if (!IsOwner) return;
+            if (!offline && !IsOwner) return;
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -156,7 +161,7 @@ namespace StarterAssets
 
         private void Update()
         {
-            if (!IsOwner) return;
+            if (!offline && !IsOwner) return;
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();
@@ -166,7 +171,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (!IsOwner) return;
+            if (!offline && !IsOwner) return;
             CameraRotation();
         }
 
