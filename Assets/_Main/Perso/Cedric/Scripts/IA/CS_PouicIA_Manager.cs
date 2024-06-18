@@ -34,42 +34,38 @@ public class CS_PouicIA_Manager : MonoBehaviour
         _listGizmosData.Clear();
         foreach (KeyValuePair<NavMeshAgent, AgentData> agent in _listAgents.ToList()) //Agents
         {
-            if (agent.Value.playerForce.sqrMagnitude < 0.05f) //If no player order
+            //                                                                                        if (agent.Value.playerForce.sqrMagnitude < 0.05f) //If no player order
+            Vector3 move = Vector3.zero;
+            List<Transform> neighborObstacles = null;
+            List<Transform> neighborAgent = null;
+            Transform tr_agent = agent.Key!.transform;
+            GetNeighbors(tr_agent, _radiusVision, out neighborAgent, out neighborObstacles);
+            foreach (var behaviour in _behaviours)// Behaviours
             {
-                Vector3 move = Vector3.zero;
-                List<Transform> neighborObstacles = null;
-                List<Transform> neighborAgent = null;
-                Transform tr_agent = agent.Key!.transform;
-                GetNeighbors(tr_agent, _radiusVision, out neighborAgent, out neighborObstacles);
-                foreach (var behaviour in _behaviours)// Behaviours
+                Vector3 partialMove = behaviour.OnMove(neighborAgent, neighborObstacles, tr_agent);
+                move += partialMove;
+                if (behaviour.ShowGizmo)
                 {
-                    Vector3 partialMove = behaviour.OnMove(neighborAgent, neighborObstacles, tr_agent);
-                    move += partialMove;
-                    if (behaviour.ShowGizmo)
-                    {
-                        GizmoData currentGizmoData = new GizmoData();
-                        currentGizmoData.agentPosition = tr_agent.position;
-                        currentGizmoData.gizmoColor = behaviour.ColorGizmo;
-                        currentGizmoData.gizmoVector = partialMove;
-                        _listGizmosData.Add(currentGizmoData);
-                    } //Visualization
-                }
-                move *= _speed;
-                if (Vector3.SqrMagnitude(move) > _maxSpeed * _maxSpeed) //Clamp
-                {
-                    move.Normalize();
-                    move *= _maxSpeed;
-                }
-                agent.Key.velocity = move;
+                    GizmoData currentGizmoData = new GizmoData();
+                    currentGizmoData.agentPosition = tr_agent.position;
+                    currentGizmoData.gizmoColor = behaviour.ColorGizmo;
+                    currentGizmoData.gizmoVector = partialMove;
+                    _listGizmosData.Add(currentGizmoData);
+                } //Visualization
             }
-            else
-            { 
-                agent.Key.velocity = agent.Value.playerForce * _speed;
-                //Reduce player order in time
-                AgentData agentData = new AgentData();
-                agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.1f);
-                _listAgents[agent.Key] = agentData;
+            move *= _speed;
+            if (Vector3.SqrMagnitude(move) > _maxSpeed * _maxSpeed) //Clamp
+            {
+                move.Normalize();
+                move *= _maxSpeed;
             }
+
+            agent.Key.velocity = (move + agent.Value.playerForce) /2f;
+
+            //Reduce player order in time
+            AgentData agentData = new AgentData();
+            agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.1f);
+            _listAgents[agent.Key] = agentData;
         }
     }
 
@@ -132,11 +128,11 @@ public class CS_PouicIA_Manager : MonoBehaviour
             NavMeshAgent currentAgent = col.GetComponent<NavMeshAgent>();
             AgentData currentAgentData;
             currentAgentData = _listAgents[currentAgent];
-            
+
             newForce = currentAgent.transform.position - trPlayer.position;
             newForce = Vector3.Lerp(newForce, currentAgent.transform.forward, Vector3.Dot(newForce.normalized, currentAgent.transform.forward));
 
-            currentAgentData.playerForce = (_listAgents[currentAgent].playerForce + (newForce)) / 2f;
+            currentAgentData.playerForce = ((_listAgents[currentAgent].playerForce + (newForce)) / 2f).normalized * strenght;
             _listAgents[currentAgent] = currentAgentData;
         }
     }
