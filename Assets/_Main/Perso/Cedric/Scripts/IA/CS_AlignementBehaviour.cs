@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using static UnityEditor.Searcher.SearcherWindow;
 
 public class CS_AlignementBehaviour : CS_IABehaviour
 {

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using Netcode.Transports;
 using Steamworks;
 using System;
@@ -12,6 +13,8 @@ public class CS_SteamLobby : NetworkBehaviour
     [SerializeField] private GameObject startButton;
     [SerializeField] private GameObject joinButton;
     [SerializeField] private GameObject connectPanel;
+
+    [Space] [SerializeField] [Scene] private String sceneToLoad;
 
     private NetworkManager networkManager;
     private string hostAdressKey = "HostAddress";
@@ -34,7 +37,7 @@ public class CS_SteamLobby : NetworkBehaviour
         startButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             if (IsHost)
-                NetworkManager.Singleton.SceneManager.LoadScene("Cedric_Main", LoadSceneMode.Single);
+                NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single); // Put this on a sceneManager
         });
 
         hostLobbyButton.GetComponent<Button>().onClick.AddListener(HostLobby);

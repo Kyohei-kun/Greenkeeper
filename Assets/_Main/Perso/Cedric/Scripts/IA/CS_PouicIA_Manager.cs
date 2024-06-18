@@ -11,21 +11,20 @@ public class CS_PouicIA_Manager : MonoBehaviour
     [SerializeField][Range(1, 6)] private float _maxSpeed = 3;
     [SerializeField][Range(1, 5)] private float _radiusVision = 1;
 
-
     private List<CS_IABehaviour> _behaviours;
-    private List<NavMeshAgent> _listAgents = new List<NavMeshAgent>();
+    private Dictionary<NavMeshAgent, AgentData> _listAgents = new Dictionary<NavMeshAgent, AgentData>();
     private int _layerMaskVision;
-
     private List<GizmoData> _listGizmosData;
-
     public float RadiusVision { get => _radiusVision; set => _radiusVision = value; }
 
     public void Init(List<NavMeshAgent> _agent)
     {
-        _listAgents = _agent;
+        foreach (var agent in _agent)
+        {
+            _listAgents.Add(agent, new AgentData());
+        }
         this.enabled = true;
         _layerMaskVision = LayerMask.GetMask("Pouic") | LayerMask.GetMask("Obstacle");
-
         _behaviours = GetComponents<CS_IABehaviour>().ToList();
         _listGizmosData = new List<GizmoData>();
     }
@@ -33,49 +32,53 @@ public class CS_PouicIA_Manager : MonoBehaviour
     private void Update()
     {
         _listGizmosData.Clear();
-        
-        foreach (NavMeshAgent agent in _listAgents) //Agents
+        foreach (KeyValuePair<NavMeshAgent, AgentData> agent in _listAgents.ToList()) //Agents
         {
-            Vector3 move = Vector3.zero;
-            List<Transform> neighborObstacles = null;
-            List<Transform> neighborAgent = null;
-            Transform tr_agent = agent.transform;
-
-            GetNeighbors(tr_agent, _radiusVision, out neighborAgent ,out neighborObstacles);
-
-            foreach (var behaviour in _behaviours)// Behaviours
+            if (agent.Value.playerForce.sqrMagnitude < 0.05f) //If no player order
             {
-                Vector3 partialMove = behaviour.OnMove(neighborAgent, neighborObstacles, tr_agent);
-                move += partialMove;
-
-                if (behaviour.ShowGizmo)
+                Vector3 move = Vector3.zero;
+                List<Transform> neighborObstacles = null;
+                List<Transform> neighborAgent = null;
+                Transform tr_agent = agent.Key!.transform;
+                GetNeighbors(tr_agent, _radiusVision, out neighborAgent, out neighborObstacles);
+                foreach (var behaviour in _behaviours)// Behaviours
                 {
-                    GizmoData currentGizmoData = new GizmoData();
-                    currentGizmoData.agentPosition = tr_agent.position;
-                    currentGizmoData.gizmoColor = behaviour.ColorGizmo;
-                    currentGizmoData.gizmoVector = partialMove;
-                    _listGizmosData.Add(currentGizmoData);
-                } //Visualization
+                    Vector3 partialMove = behaviour.OnMove(neighborAgent, neighborObstacles, tr_agent);
+                    move += partialMove;
+                    if (behaviour.ShowGizmo)
+                    {
+                        GizmoData currentGizmoData = new GizmoData();
+                        currentGizmoData.agentPosition = tr_agent.position;
+                        currentGizmoData.gizmoColor = behaviour.ColorGizmo;
+                        currentGizmoData.gizmoVector = partialMove;
+                        _listGizmosData.Add(currentGizmoData);
+                    } //Visualization
+                }
+                move *= _speed;
+                if (Vector3.SqrMagnitude(move) > _maxSpeed * _maxSpeed) //Clamp
+                {
+                    move.Normalize();
+                    move *= _maxSpeed;
+                }
+                agent.Key.velocity = move;
             }
-
-            move *= _speed;
-            if (Vector3.SqrMagnitude(move) > _maxSpeed * _maxSpeed) //Clamp
-            {
-                move.Normalize();
-                move *= _maxSpeed;
+            else
+            { 
+                agent.Key.velocity = agent.Value.playerForce * _speed;
+                //Reduce player order in time
+                AgentData agentData = new AgentData();
+                agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.1f);
+                _listAgents[agent.Key] = agentData;
             }
-
-            agent.velocity = move;
         }
     }
 
-    private void GetNeighbors(Transform agent, float radius,out List<Transform> neighborAgents, out List<Transform> neighborObstacles)
+
+    private void GetNeighbors(Transform agent, float radius, out List<Transform> neighborAgents, out List<Transform> neighborObstacles)
     {
         neighborObstacles = new List<Transform>();
         neighborAgents = new List<Transform>();
-
         Collider[] hitColliders = Physics.OverlapSphere(agent.position, radius + 5, _layerMaskVision);
-
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
@@ -88,7 +91,6 @@ public class CS_PouicIA_Manager : MonoBehaviour
                 neighborAgents.Add(hitCollider.transform);
             }
         }
-
         if (neighborObstacles.Count > 1)
         {
             neighborObstacles = neighborObstacles.OrderBy(o => Vector3.Distance(agent.position, o.position)).ToList();
@@ -113,5 +115,29 @@ public class CS_PouicIA_Manager : MonoBehaviour
         public Vector3 agentPosition;
         public Color gizmoColor;
         public Vector3 gizmoVector;
+    }
+
+    struct AgentData
+    {
+        public float currentSpeed;
+        public Vector3 playerForce;
+    }
+
+    public void AddPlayerForce(Transform trPlayer, float radius, float strenght)
+    {
+        foreach (var col in Physics.OverlapSphere(trPlayer.position, radius, LayerMask.GetMask("Pouic")).ToList())
+        {
+            Vector3 newForce = Vector3.zero;
+
+            NavMeshAgent currentAgent = col.GetComponent<NavMeshAgent>();
+            AgentData currentAgentData;
+            currentAgentData = _listAgents[currentAgent];
+            
+            newForce = currentAgent.transform.position - trPlayer.position;
+            newForce = Vector3.Lerp(newForce, currentAgent.transform.forward, Vector3.Dot(newForce.normalized, currentAgent.transform.forward));
+
+            currentAgentData.playerForce = (_listAgents[currentAgent].playerForce + (newForce)) / 2f;
+            _listAgents[currentAgent] = currentAgentData;
+        }
     }
 }
