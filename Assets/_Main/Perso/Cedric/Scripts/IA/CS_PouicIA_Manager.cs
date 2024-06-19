@@ -7,8 +7,8 @@ using UnityEngine.AI;
 
 public class CS_PouicIA_Manager : MonoBehaviour
 {
-    [SerializeField][Range(1, 5)] private float _speed = 1;
-    [SerializeField][Range(1, 6)] private float _maxSpeed = 3;
+    [SerializeField][Range(1, 9)] private float _speed = 1;
+    [SerializeField][Range(1, 10)] private float _maxSpeed = 3;
     [SerializeField][Range(1, 5)] private float _radiusVision = 1;
 
     private List<CS_IABehaviour> _behaviours;
@@ -64,7 +64,7 @@ public class CS_PouicIA_Manager : MonoBehaviour
 
             //Reduce player order in time
             AgentData agentData = new AgentData();
-            agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.1f);
+            agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.05f);
             _listAgents[agent.Key] = agentData;
         }
     }
