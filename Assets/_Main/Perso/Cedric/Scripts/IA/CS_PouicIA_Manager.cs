@@ -2,10 +2,11 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CS_PouicIA_Manager : MonoBehaviour
+public class CS_PouicIA_Manager : NetworkBehaviour
 {
     [SerializeField][Range(1, 9)] private float _speed = 1;
     [SerializeField][Range(1, 10)] private float _maxSpeed = 3;
@@ -27,6 +28,7 @@ public class CS_PouicIA_Manager : MonoBehaviour
         _layerMaskVision = LayerMask.GetMask("Pouic") | LayerMask.GetMask("Obstacle");
         _behaviours = GetComponents<CS_IABehaviour>().ToList();
         _listGizmosData = new List<GizmoData>();
+        this.enabled = true;
     }
 
     private void Update()
@@ -34,7 +36,6 @@ public class CS_PouicIA_Manager : MonoBehaviour
         _listGizmosData.Clear();
         foreach (KeyValuePair<NavMeshAgent, AgentData> agent in _listAgents.ToList()) //Agents
         {
-            //                                                                                        if (agent.Value.playerForce.sqrMagnitude < 0.05f) //If no player order
             Vector3 move = Vector3.zero;
             List<Transform> neighborObstacles = null;
             List<Transform> neighborAgent = null;
@@ -59,9 +60,7 @@ public class CS_PouicIA_Manager : MonoBehaviour
                 move.Normalize();
                 move *= _maxSpeed;
             }
-
             agent.Key.velocity = (move + agent.Value.playerForce) /2f;
-
             //Reduce player order in time
             AgentData agentData = new AgentData();
             agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.05f);
@@ -124,14 +123,11 @@ public class CS_PouicIA_Manager : MonoBehaviour
         foreach (var col in Physics.OverlapSphere(trPlayer.position, radius, LayerMask.GetMask("Pouic")).ToList())
         {
             Vector3 newForce = Vector3.zero;
-
             NavMeshAgent currentAgent = col.GetComponent<NavMeshAgent>();
             AgentData currentAgentData;
             currentAgentData = _listAgents[currentAgent];
-
             newForce = currentAgent.transform.position - trPlayer.position;
             newForce = Vector3.Lerp(newForce, currentAgent.transform.forward, Vector3.Dot(newForce.normalized, currentAgent.transform.forward));
-
             currentAgentData.playerForce = ((_listAgents[currentAgent].playerForce + (newForce)) / 2f).normalized * strenght;
             _listAgents[currentAgent] = currentAgentData;
         }

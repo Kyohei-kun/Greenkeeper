@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 using UnityEngine.VFX;
 
 public class CS_PlayerRepulsion : MonoBehaviour
@@ -13,7 +14,7 @@ public class CS_PlayerRepulsion : MonoBehaviour
 
     [SerializeField] private GameObject _vfxLoading;
     [SerializeField] private Transform _prefab_VFX_Wave;
-    [SerializeField] [MinMaxSlider(0.5f,5f)] Vector2 _minMaxScaleWave_VFX;
+    [SerializeField][MinMaxSlider(0.5f, 5f)] Vector2 _minMaxScaleWave_VFX;
 
     private CS_PouicIA_Manager _manager;
     private bool _isPressed;
@@ -23,8 +24,8 @@ public class CS_PlayerRepulsion : MonoBehaviour
     {
         if (_manager == null)
         {
-            _manager = GameObject.FindGameObjectWithTag("PouicIA_Manager").GetComponent<CS_PouicIA_Manager>();
-            if (_manager == null) { return; }
+            try{_manager = GameObject.FindGameObjectWithTag("PouicIA_Manager").GetComponent<CS_PouicIA_Manager>();}
+            catch (System.Exception) { return; }
         }
 
         if (value.isPressed)
@@ -33,24 +34,17 @@ public class CS_PlayerRepulsion : MonoBehaviour
         }
         else
         {
-            _isPressed = false;
-            _manager.AddPlayerForce(transform, _radiusRepulsion, _strenghtByTime.Evaluate(_timer));
-            //VFX Wave
-            Transform temp = Instantiate(_prefab_VFX_Wave);
-            temp.position = transform.position;
-            float scale = _strenghtByTime.Evaluate(_timer).Remap(_strenghtByTime.keys[0].value, _strenghtByTime.keys[_strenghtByTime.length-1].value, _minMaxScaleWave_VFX.x,_minMaxScaleWave_VFX.y);
-            temp.GetComponent<VisualEffect>().SetFloat("Scale", scale);
+            MakeRepulsion();   
         }
     }
 
-
     private void Update()
     {
-        if(_isPressed)
+        if (_isPressed)
         {
             _timer += Time.deltaTime;
             _vfxLoading.SetActive(true);
-            if(_timer > _strenghtByTime.keys[_strenghtByTime.length-1].time)
+            if (_timer > _strenghtByTime.keys[_strenghtByTime.length - 1].time)
             {
                 _vfxLoading.SetActive(false);
             }
@@ -60,6 +54,18 @@ public class CS_PlayerRepulsion : MonoBehaviour
             _timer = 0;
             _vfxLoading.SetActive(false);
         }
+    }
+
+    private void MakeRepulsion()
+    {
+        _isPressed = false;
+        _manager.AddPlayerForce(transform, _radiusRepulsion, _strenghtByTime.Evaluate(_timer));
+        //VFX Wave
+        Transform temp = Instantiate(_prefab_VFX_Wave);
+        temp.position = transform.position;
+        float scale = _strenghtByTime.Evaluate(_timer).Remap(_strenghtByTime.keys[0].value, _strenghtByTime.keys[_strenghtByTime.length - 1].value, _minMaxScaleWave_VFX.x, _minMaxScaleWave_VFX.y);
+        temp.GetComponent<VisualEffect>().SetFloat("Scale", scale);
+        
     }
 }
 
