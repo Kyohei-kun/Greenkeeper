@@ -1233,7 +1233,6 @@ GameObject:
   - component: {fileID: 8482608396370743216}
   - component: {fileID: -1457181701122015557}
   - component: {fileID: 3216012018254567290}
-  - component: {fileID: 8909131043404128849}
   - component: {fileID: 4290111251123267636}
   - component: {fileID: 5513308420684343589}
   - component: {fileID: 2749039251523458442}
@@ -1494,20 +1493,6 @@ MonoBehaviour:
   thirdPersonController: {fileID: 7040373946682534808}
   characterController: {fileID: 8832238698934020179}
   crown: {fileID: 192990926276506591}
---- !u!114 &8909131043404128849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8982187456580754223}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f77f4bd83e108459df43bf50db1681, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bullet_pref: {fileID: 4843805166385417423, guid: 1574d2dfe057d734b91b3188effcf0c0,
-    type: 3}
 --- !u!208 &4290111251123267636
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1578,8 +1563,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.2
-  low: 0.1
-  high: 0.5
+  low:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1.5
+      value: 0
+      inSlope: 0.0046787406
+      outSlope: 0.0046787406
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.625
+    - serializedVersion: 3
+      time: 3
+      value: 0.2
+      inSlope: 0.46813518
+      outSlope: 0.46813518
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.112500034
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  high:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.015872987
+      outSlope: 0.015872987
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.3937497
+    - serializedVersion: 3
+      time: 3
+      value: 0
+      inSlope: 0.010256407
+      outSlope: 0.010256407
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.40625015
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &6146134103703969024
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,8 +8,11 @@ public class CS_ColorLightControler : MonoBehaviour
 {
     [SerializeField] private float _speed = 1;
 
-    [SerializeField][Range(0f, 1f)] float low = 0.5f;
-    [SerializeField] [Range(0f,1f)] private float high = 0.5f;
+    [SerializeField] AnimationCurve low;
+    [SerializeField] AnimationCurve high;
+
+    //[SerializeField][Range(0f, 1f)] float low = 0.5f;
+    //[SerializeField] [Range(0f,1f)] private float high = 0.5f;
 
     private void Update()
     {
@@ -18,13 +21,11 @@ public class CS_ColorLightControler : MonoBehaviour
         { return; }
         SetLightColor((DualSenseGamepadHID)gamepad, GetColorByTimeAndSpeed());
 
+        //DualSenseGamepadHID currentGamePad;
+        //try { currentGamePad = (DualSenseGamepadHID)Gamepad.current; }
+        //catch (System.Exception) { return; }
 
-
-        DualSenseGamepadHID currentGamePad;
-        try { currentGamePad = (DualSenseGamepadHID)Gamepad.current; }
-        catch (System.Exception) { return; }
-
-        currentGamePad.SetMotorSpeeds(low, high);
+        //currentGamePad.SetMotorSpeeds(low.Evaluate(Mathf.Repeat(Time.time, 3)), high.Evaluate(Mathf.Repeat(Time.time, 3)));
     }
 
     private void SetLightColor(DualSenseGamepadHID dualSense, Color color)
