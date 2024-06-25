@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302413387747069543}
   - component: {fileID: 6404302398462733367}
+  - component: {fileID: 4858789236128030915}
   - component: {fileID: 86145783944852693}
   - component: {fileID: 1111133461193453616}
   - component: {fileID: 7329089975001935999}
@@ -51,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3355448705
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 292059018
+  InScenePlacedSourceGlobalObjectIdHash: 292059018
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -60,7 +61,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &86145783944852693
+--- !u!114 &4858789236128030915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,14 +70,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 7120653137408371601}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826bc6e4116722f46ae2dc0c86826958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pouicPrefab: {fileID: 2426768769265457071, guid: a8981c2c1501ccc4fb83b26403323c56,
+    type: 3}
+  _pouicMaxQuantity: 100
+  _spawnRate: 5
+  _spawnPosition:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &86145783944852693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7120653137408371601}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b5e6f7acba95ad4c9a878b48ba574a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _navMeshSurface: {fileID: 0}
   _pouicPrefab: {fileID: 2426768769265457071, guid: a8981c2c1501ccc4fb83b26403323c56,
     type: 3}
   _nbPouic: 200
-  _radiusSpawn: 50.4
+  _radiusSpawn: 10
 --- !u!114 &1111133461193453616
 MonoBehaviour:
   m_ObjectHideFlags: 0

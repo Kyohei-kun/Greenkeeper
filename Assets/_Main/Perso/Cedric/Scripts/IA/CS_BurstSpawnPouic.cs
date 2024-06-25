@@ -5,10 +5,9 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CS_SpawnPouic : NetworkBehaviour
+public class CS_BurstSpawnPouic : NetworkBehaviour
 {
     [Header("Setup")]
-    [SerializeField] NavMeshSurface _navMeshSurface;
     [SerializeField] Transform _pouicPrefab;
 
     [Space]

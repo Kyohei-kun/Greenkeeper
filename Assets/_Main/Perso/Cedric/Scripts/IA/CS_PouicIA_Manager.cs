@@ -1,5 +1,3 @@
-using Steamworks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -16,19 +14,31 @@ public class CS_PouicIA_Manager : NetworkBehaviour
     private Dictionary<NavMeshAgent, AgentData> _listAgents = new Dictionary<NavMeshAgent, AgentData>();
     private int _layerMaskVision;
     private List<GizmoData> _listGizmosData;
-    public float RadiusVision { get => _radiusVision; set => _radiusVision = value; }
 
-    public void Init(List<NavMeshAgent> _agent)
+
+    public float RadiusVision { get => _radiusVision; set => _radiusVision = value; }
+    public Dictionary<NavMeshAgent, AgentData> ListAgents { get => _listAgents; set => _listAgents = value; }
+
+    public void Init(List<NavMeshAgent> _newAgents)
     {
-        foreach (var agent in _agent)
-        {
-            _listAgents.Add(agent, new AgentData());
-        }
+        AddAgents(_newAgents);
         this.enabled = true;
         _layerMaskVision = LayerMask.GetMask("Pouic") | LayerMask.GetMask("Obstacle");
         _behaviours = GetComponents<CS_IABehaviour>().ToList();
         _listGizmosData = new List<GizmoData>();
         this.enabled = true;
+    }
+
+    public void AddAgents(List<NavMeshAgent> _agent)
+    {
+        foreach (var agent in _agent)
+        {
+            _listAgents.Add(agent, new AgentData());
+        }
+    }
+    public void OnAgentDestroy(NavMeshAgent agent)
+    {
+        _listAgents.Remove(agent);
     }
 
     private void Update()
@@ -60,7 +70,9 @@ public class CS_PouicIA_Manager : NetworkBehaviour
                 move.Normalize();
                 move *= _maxSpeed;
             }
-            agent.Key.velocity = (move + agent.Value.playerForce) /2f;
+
+            Vector3 temp = (move + agent.Value.playerForce) / 2f;
+            agent.Key.velocity = temp;
             //Reduce player order in time
             AgentData agentData = new AgentData();
             agentData.playerForce = Vector3.Lerp(agent.Value.playerForce, Vector3.zero, 0.05f);
@@ -92,32 +104,6 @@ public class CS_PouicIA_Manager : NetworkBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_listGizmosData != null)
-        {
-            foreach (var item in _listGizmosData)
-            {
-                Gizmos.color = item.gizmoColor;
-                Gizmos.DrawLine(item.agentPosition, item.agentPosition + item.gizmoVector);
-                Gizmos.DrawCube(item.agentPosition + item.gizmoVector, Vector3.one * 0.2f);
-            }
-        }
-    }
-
-    struct GizmoData
-    {
-        public Vector3 agentPosition;
-        public Color gizmoColor;
-        public Vector3 gizmoVector;
-    }
-
-    struct AgentData
-    {
-        public float currentSpeed;
-        public Vector3 playerForce;
-    }
-
     public void AddPlayerForce(Transform trPlayer, float radius, float strenght)
     {
         foreach (var col in Physics.OverlapSphere(trPlayer.position, radius, LayerMask.GetMask("Pouic")).ToList())
@@ -131,5 +117,31 @@ public class CS_PouicIA_Manager : NetworkBehaviour
             currentAgentData.playerForce = ((_listAgents[currentAgent].playerForce + (newForce)) / 2f).normalized * strenght;
             _listAgents[currentAgent] = currentAgentData;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_listGizmosData != null)
+        {
+            foreach (var item in _listGizmosData)
+            {
+                Gizmos.color = item.gizmoColor;
+                Gizmos.DrawLine(item.agentPosition, item.agentPosition + item.gizmoVector);
+                Gizmos.DrawCube(item.agentPosition + item.gizmoVector, Vector3.one * 0.2f);
+            }
+        }
+    }
+
+    public struct GizmoData
+    {
+        public Vector3 agentPosition;
+        public Color gizmoColor;
+        public Vector3 gizmoVector;
+    }
+
+    public struct AgentData
+    {
+        public float currentSpeed;
+        public Vector3 playerForce;
     }
 }

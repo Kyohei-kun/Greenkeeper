@@ -20,7 +20,8 @@ public class CS_AvoidanceBehaviour : CS_IABehaviour
             {
                 nNear++;
                 Vector3 rawAvoidance = agent.position - neighbor.transform.position;
-                rawAvoidance = rawAvoidance.normalized / rawAvoidance.magnitude;
+                if (rawAvoidance != Vector3.zero)
+                    rawAvoidance = rawAvoidance.normalized / rawAvoidance.magnitude;
                 result += rawAvoidance;
 
             }
@@ -33,6 +34,6 @@ public class CS_AvoidanceBehaviour : CS_IABehaviour
 
         result *= _weight;
 
-        return result; 
+        return result;
     }
 }
