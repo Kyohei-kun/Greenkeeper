@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MT_Leaf_Yellow
-  m_Shader: {fileID: -6465566751694194690, guid: 366c0ba2741f84a4d9cddbf6137c2ae2,
+  m_Shader: {fileID: -6465566751694194690, guid: dfe4f4560e1b684469c151ab1b7c63fb,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 11b1c098ae3177b4791ab0eee68d586f, type: 2}
+  m_Parent: {fileID: 2100000, guid: 68a4f2b20f3fbab46878a1addca343d8, type: 2}
   m_ModifiedSerializedProperties: 24
   m_ValidKeywords:
   - _ALPHATEST_ON
@@ -34,15 +34,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: f6e627240b21bc0459bfcce0ded0b8ae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6344bf96fbda94141a525046d088fb23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
-        m_Texture: {fileID: 2800000, guid: 3da1d2297f7ed774f82161b1133ee8ab, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6344bf96fbda94141a525046d088fb23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: 30069c2e0a410b54fb4eb75d3aae5cee, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6344bf96fbda94141a525046d088fb23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_32fa156fb1aa4e63a364c32c05b79415_Texture_1_Texture2D:

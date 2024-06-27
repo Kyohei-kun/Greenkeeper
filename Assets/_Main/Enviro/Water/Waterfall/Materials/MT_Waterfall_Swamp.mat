@@ -24,7 +24,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MT_Waterfall_Swamp
-  m_Shader: {fileID: -6465566751694194690, guid: 1e2611e85c39e264a80125068c43340a,
+  m_Shader: {fileID: -6465566751694194690, guid: e122da0754778374d92121bf8e9fafc4,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -108,7 +108,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_7b2df19d5308422c9f91d6ab2fe8b912_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 84329fdaedf144641aaa7b15732e2ff9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:

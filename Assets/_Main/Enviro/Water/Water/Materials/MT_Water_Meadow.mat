@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MT_Water_Meadow
-  m_Shader: {fileID: -6465566751694194690, guid: 43223b7cb31e3be449c51021997e4055,
+  m_Shader: {fileID: -6465566751694194690, guid: 1c79d7420d7a5954b88440e51ad899b0,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -92,7 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_1acb2796f68044e4a02120a716b63ac4_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 84329fdaedf144641aaa7b15732e2ff9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
