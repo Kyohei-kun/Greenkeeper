@@ -6,13 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Main/Perso/Cedric/Scenes/Ced_Lobby.unity
+    path: Assets/_Main/Scene/SC_Lobby.unity
     guid: 1cc44156fa842e54ca7c4512ec8f7fb2
   - enabled: 1
-    path: Assets/_Main/Perso/Cedric/Scenes/Ced_Main.unity
-    guid: 81f9f71ee28c1d849b9e5e1baa88cf47
-  - enabled: 1
-    path: Assets/_Main/Perso/Cedric/Scenes/Ced_IA/Ced_IA.unity
+    path: Assets/_Main/Scene/Scene_IA_Test/SC_IA_Test.unity
     guid: 964c26e3f37b64045a1b38e49d7797af
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
